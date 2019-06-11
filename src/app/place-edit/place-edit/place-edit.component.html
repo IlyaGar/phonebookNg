@@ -1,0 +1,67 @@
+<h1>Список объектов</h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th><!--Id--></th>
+            <th>Название</th>
+            <th>Телефон</th>
+            <th>Адрес</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let place of places  | paginate: { itemsPerPage: 15, currentPage: p }">
+            <td scope="row"><!--{{place.id}}--></td>
+            <td scope="row">{{place.name}}</td>
+            <td scope="row">{{place.nomer}}</td>
+            <td scope="row">{{place.address}}</td>
+            <td scope="row">
+                <input type="button" value="Изменить" class="btn btn-primary btn-sm" (click)="onEdit(place)" />
+            </td>
+            <td scope="row">
+                <input type="button" value="Удалить" (click)="onDelete(place)" class="btn btn-danger btn-sm" />
+            </td>
+        </tr>
+        
+    <tr *ngIf="isSelectedItem">
+        <td>
+            <input type="text" [(ngModel)]="editPlace.id" readonly disabled class="form-control lab"/>
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="editPlace.name" class="form-control" />
+        </td>
+        <td>
+            <input type="text" [(ngModel)]="editPlace.nomer" class="form-control" />
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="editPlace.address" class="form-control" />
+        </td>
+    </tr>
+    <tr *ngIf="!isSelectedItem">
+            <td></td>
+            <td>
+                <input type="text" class="form-control" id="name" required [(ngModel)]="newPlace.name" name="name" #name="ngModel" placeholder="Название объекта">
+            </td>
+            <td>
+                <input type="text" class="form-control" id="nomer" required [(ngModel)]="newPlace.nomer" name="nomer" #nomer="ngModel" placeholder="Тел. номер">
+            </td>
+            <td>
+                <input type="text" class="form-control" id="address" required [(ngModel)]="newPlace.address" name="address" #address="ngModel" placeholder="Адрес">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div  class="form-inline">
+    <input type="button" value="Сохранить" class="btn btn-success butt" (click)="onSave()" *ngIf="isSelectedItem" />
+    <input type="button" value="Добавить" class="btn btn-primary butt" (click)="onAdd(newPlace)" *ngIf="!isSelectedItem"/>
+    <input type="button" value="Отмена" class="btn btn-warning butt" (click)="onCancel()" />
+</div>
+<br />
+<ul class="pagination">  
+    <pagination-controls  (pageChange)="p = $event"  
+                          autoHide="true"  
+                          directionLinks="false">
+    </pagination-controls>  
+  </ul>

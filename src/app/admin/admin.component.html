@@ -1,0 +1,29 @@
+<div class="login">
+  <h2>Только для администраторов!</h2>
+  <div *ngIf="!isAdmin">
+      <h1 class="h3 mb-3 font-weight-normal">Пожалуйста войдите</h1>
+      <label for="login">Логин</label>
+      <input type="text" name="login" id="login" class="form-control" placeholder="Логин" required autofocus>
+      <label for="password">Пароль</label>
+      <input type="password" name="password" id="password" class="form-control" placeholder="Пароль" required>
+      <br />
+      <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="onSignIn(login, password)">Войти</button>
+  </div>
+  <div *ngIf="isAdmin">
+      <div class="btn-group button-input" role="group" aria-label="Edit group" *ngIf="!isPlacesEdit">
+          <button (click)="onPlacesEdit()" type="button" class="btn btn-primary">Объекты</button>
+        </div>
+      
+        <div class="btn-group button-input" role="group" aria-label="Edit group" *ngIf="!isPhonesEdit">
+            <button (click)="onPhonesEdit()" type="button" class="btn btn-primary">Телефоны</button>
+        </div>
+        
+        <div class="btn-group button-input" role="group" aria-label="Edit group">
+            <button (click)="onSignOut()" type="button" class="btn btn-warning">Выход</button>
+        </div>
+  </div>
+</div>
+<div *ngIf="isAdmin">
+    <div *ngIf="isPlacesEdit"><app-place-edit></app-place-edit></div>
+    <div *ngIf="isPhonesEdit"><app-phone-edit></app-phone-edit></div>
+</div>

@@ -1,0 +1,13 @@
+td{
+    margin: 0%;
+    padding: 0%;
+}
+td:first-child{ 
+    width: 2.5em;        
+}
+.lab{
+    padding-left: 15%;
+}
+.butt{
+    margin-right: 1%;
+}

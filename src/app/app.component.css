@@ -1,0 +1,12 @@
+.wrap {
+    background: #ececec;
+    margin: 0%;
+    padding: 0%;
+}
+.content {
+    min-height: calc(100vh - 40px);
+}
+.footer_dev {
+    height: 40px;
+    background: #797979;
+}

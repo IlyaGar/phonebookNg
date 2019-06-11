@@ -1,0 +1,64 @@
+<h2>Телефонный справочник</h2>
+<div class="border-phone">
+  <div>
+    <p class="form-inline">
+      <label for="filterPlace">Объект:</label>
+      <select class="form-control p-2 m-2" id="exampleFormControlSelect1" [(ngModel)]="filterPlace">
+        <option [ngValue]="undefined">Все объекты</option>
+        <option *ngFor="let place of places" [selected]="selected" [attr.value]="place.name">{{place.name}}</option>
+      </select>
+      
+      <label for="post" class="sr-only" id="postLabel">Должность:</label>
+      <input type="text" class="form-control" id="filterPost" name="filterPost" [(ngModel)]="filterPost" placeholder="Должность">
+      
+      <label for="sname" class="sr-only">Фамилия:</label>
+      <input type="text" class="form-control" id="filterName" name="filterName" [(ngModel)]="filterName" placeholder="Фамилия">
+  
+      <button type="input" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Фильтрация по параметрам"
+        (click)="onFilter(filterPlace, filterPost, filterName)">
+        Отобрать
+      </button>
+      
+      <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Очистить фильтр" 
+        (click)="onClearFilter()">
+        Очистить
+      </button>
+      </p>
+  </div>
+
+  <table class="table table-hover table-striped sortable">
+    <thead>
+        <tr>
+          <th class="th-hov" (click)="onSortTable('name')">ФИО</th>
+          <th class="th-hov" (click)="onSortTable('post')">Должность</th>
+          <th>Отдел</th>
+          <th class="th-hov" (click)="onSortTable('place')">Объект</th>
+          <th scope="col">Номер</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let phone of phones | paginate: { itemsPerPage: countItems, currentPage: p }">
+        <td scope="row" class="fio">{{phone.name}}</td>
+        <td class="post">{{phone.post}}</td>
+        <td>{{phone.department}}</td>
+        <td class="place">{{phone.place}}</td>
+        <td class="nomer">{{phone.nomer}}</td>
+        </tr>
+    </tbody>
+  </table>
+  <div class="form-inline">
+    <select class="form-control sel-tb" id="countItems" name="countItems" [(ngModel)]="countItems">
+      <option selected="selected">10</option>
+      <option>15</option>
+      <option>25</option>
+      <option>50</option>
+    </select>
+    <ul class="pagination">  
+      <pagination-controls  (pageChange)="p = $event"  
+                            autoHide="true"  
+                            previousLabel="Назад"
+                            nextLabel="Вперед">
+      </pagination-controls>  
+    </ul>
+  </div>
+</div>

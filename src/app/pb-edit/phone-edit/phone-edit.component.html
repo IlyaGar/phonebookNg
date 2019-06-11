@@ -1,0 +1,122 @@
+<h1>Телефонный справочник</h1>
+<div>
+    <p class="form-inline">
+      <label for="filterPlace">Объект:</label>
+      
+      <select class="form-control p-2 m-2" id="exampleFormControlSelect1" [(ngModel)]="filterPlace">
+        <option [ngValue]="undefined">Все объекты</option>
+        <option *ngFor="let place of places" [selected]="selected" [attr.value]="place.name">{{place.name}}</option>
+      </select>
+
+      <label for="post" class="sr-only" id="postLabel">Должность:</label>
+      <input type="text" class="form-control" id="filterPost" name="filterPost" [(ngModel)]="filterPost" placeholder="Должность">
+      
+      <label for="sname" class="sr-only">Фамилия:</label>
+      <input type="text" class="form-control" id="filterName" name="filterName" [(ngModel)]="filterName" placeholder="Фамилия">
+  
+      <button type="input" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Фильтрация по параметрам"
+        (click)="onFilter(filterPlace, filterPost, filterName)">
+        Отобрать
+      </button>
+      
+      <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Очистить фильтр" 
+        (click)="onClearFilter()">
+        Очистить
+      </button>
+      </p>
+  </div>
+  <div>
+  <table class="table table-hover">
+    <thead>
+        <tr>
+          <th class="th-hov" (click)="onSortTable('name')">ФИО</th>
+          <th class="th-hov" (click)="onSortTable('post')">Должность</th>
+          <th>Отдел</th>
+          <th class="th-hov" (click)="onSortTable('place')">Объект</th>
+          <th scope="col">Номер</th>
+          <th></th>
+          <th></th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let phone of phones | paginate: { itemsPerPage: countItems, currentPage: p }" (click)="setSelected(phone.id)" [ngClass]="{selected : phone.id === isActive}">
+        <td scope="row" class="fio">{{phone.name}}</td>
+        <td class="post" >{{phone.post}}</td>
+        <td>{{phone.department}}</td>
+        <td class="place">{{phone.place}}</td>
+        <td class="nomer">{{phone.nomer}}</td>
+        <td scope="row">
+          <input type="button" value="Изменить" class="btn btn-primary btn-sm" (click)="onEdit(phone)" />
+      </td>
+      <td scope="row">
+          <input type="button" value="Удалить" (click)="onDelete(phone)" class="btn btn-danger btn-sm" />
+      </td>
+        </tr>
+      <tr *ngIf="isSelectedItem">
+        <td>
+          <input type="text" [(ngModel)]="editPhone.name" class="form-control" placeholder="ФИО" />
+          <input type="text" [(ngModel)]="editPhone.email" class="form-control" placeholder="Емейл" />
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="editPhone.post" class="form-control" placeholder="Должность" />
+          <input type="text" [(ngModel)]="editPhone.description" class="form-control"  placeholder="Описание" />
+        </td>
+        <td><input type="text" [(ngModel)]="editPhone.department" class="form-control" placeholder="Отдел" />
+        </td>
+        <td>      
+          <select class="form-control" [(ngModel)]="editPhone.place">
+            <option [ngValue]="undefined">Все объекты</option>
+            <option *ngFor="let place of places" [selected]="selected" [attr.value]="place.name">{{place.name}}</option>
+          </select>
+        </td>
+        <td><input type="text" [(ngModel)]="editPhone.nomer" class="form-control" placeholder="Номер" />
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr *ngIf="!isSelectedItem">
+        <td>
+          <input type="text" class="form-control" id="name" required [(ngModel)]="newPhone.name" name="name" #name="ngModel" placeholder="ФИО">
+          <input type="email" class="form-control" id="email" required [(ngModel)]="newPhone.email" name="email" #email="ngModel" placeholder="Емейл">
+        </td>
+        <td>
+          <input type="text" class="form-control" id="post" required [(ngModel)]="newPhone.post" name="post" #post="ngModel" placeholder="Должность">
+          <input type="text" class="form-control" id="description" required [(ngModel)]="newPhone.description" name="description" #description="ngModel" placeholder="Описание">
+        </td>
+        <td><input type="text" class="form-control" id="department" required [(ngModel)]="newPhone.department" name="department" #department="ngModel" placeholder="Отдел">
+        </td>
+        <td>
+          <select class="form-control" [(ngModel)]="newPhone.place">
+              <option [ngValue]="undefined">Все объекты</option>
+              <option *ngFor="let place of places" [selected]="selected" [attr.value]="place.name">{{place.name}}</option>
+            </select>
+        </td>
+        <td><input type="text" class="form-control" id="nomer" required [(ngModel)]="newPhone.nomer" name="nomer" #nomer="ngModel" placeholder="Номер">
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <div  class="form-inline">
+    <input type="button" value="Сохранить" class="btn btn-success butt" (click)="onSave()" *ngIf="isSelectedItem" />
+    <input type="button" value="Добавить" class="btn btn-primary butt" (click)="onAdd(newPhone)" *ngIf="!isSelectedItem"/>
+    <input type="button" value="Отмена" class="btn btn-warning butt" (click)="onCancel()" />
+</div>
+<br />
+  <div class="form-inline">
+    <select class="form-control sel-tb" id="countItems" name="countItems" [(ngModel)]="countItems">
+      <option selected="selected">10</option>
+      <option>15</option>
+      <option>25</option>
+      <option>50</option>
+    </select>
+    <ul class="pagination">  
+      <pagination-controls  (pageChange)="p = $event"  
+                            autoHide="true"  
+                            previousLabel="Назад"
+                            nextLabel="Вперед">
+      </pagination-controls>  
+    </ul>
+  </div>
+</div>

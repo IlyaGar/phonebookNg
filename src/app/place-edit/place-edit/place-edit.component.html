@@ -20,7 +20,9 @@
                 <input type="button" value="Изменить" class="btn btn-primary btn-sm" (click)="onEdit(place)" />
             </td>
             <td scope="row">
-                <input type="button" value="Удалить" (click)="onDelete(place)" class="btn btn-danger btn-sm" />
+                <button type="button" (click)="onDelete(place)" class="btn btn-danger btn-sm">
+                    <img src="../../../assets/delete-512.png" width="20" height="20" />
+                </button>
             </td>
         </tr>
         
